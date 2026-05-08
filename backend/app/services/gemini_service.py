@@ -10,49 +10,45 @@ import google.generativeai as genai
 
 
 # ─── Initialization ──────────────────────────────────────────
-_model: Optional[Any] = None
-_vision_model: Optional[Any] = None
+_key_index = 0
 
+def _get_next_api_key() -> str:
+    global _key_index
+    keys = []
+    key1 = os.getenv("GEMINI_API_KEY")
+    key2 = os.getenv("GEMINI_API_KEY_2")
+    if key1: keys.append(key1)
+    if key2: keys.append(key2)
+    if not keys:
+        raise ValueError("No GEMINI_API_KEY or GEMINI_API_KEY_2 environment variable is set")
+    
+    key = keys[_key_index % len(keys)]
+    _key_index += 1
+    return key
 
-def _init_gemini() -> Any:
-    """Initialize Gemini client (idempotent)."""
-    global _model
-    if _model is not None:
-        return _model
-
-    api_key = os.getenv("GEMINI_API_KEY")
-    if not api_key:
-        raise ValueError("GEMINI_API_KEY environment variable is not set")
-
+def _get_gemini_model() -> Any:
+    """Initialize Gemini client with alternating API keys."""
+    api_key = _get_next_api_key()
     genai.configure(api_key=api_key)
-    _model = genai.GenerativeModel(
+    return genai.GenerativeModel(
         model_name="gemini-2.5-flash",
         generation_config=genai.types.GenerationConfig(
             temperature=0.2,
             response_mime_type="application/json",
         ),
     )
-    return _model
 
 
-def _init_vision_model() -> Any:
-    """Initialize Gemini Vision model for image analysis."""
-    global _vision_model
-    if _vision_model is not None:
-        return _vision_model
-
-    api_key = os.getenv("GEMINI_API_KEY")
-    if not api_key:
-        raise ValueError("GEMINI_API_KEY environment variable is not set")
-
+def _get_vision_model() -> Any:
+    """Initialize Gemini Vision model for image analysis with alternating API keys."""
+    api_key = _get_next_api_key()
     genai.configure(api_key=api_key)
-    _vision_model = genai.GenerativeModel(
+    return genai.GenerativeModel(
         model_name="gemini-2.5-flash",
         generation_config=genai.types.GenerationConfig(
             temperature=0.2,
         ),
     )
-    return _vision_model
 
 
 # ─── Core Generation ─────────────────────────────────────────
@@ -61,7 +57,7 @@ async def generate_json(prompt: str) -> Dict[str, Any]:
     Generate a JSON response from Gemini 2.5 Flash.
     Returns parsed dict. Raises ValueError on invalid JSON.
     """
-    model = _init_gemini()
+    model = _get_gemini_model()
     try:
         response = model.generate_content(prompt)
         raw = response.text.strip()
@@ -74,7 +70,7 @@ async def generate_json_with_image(prompt: str, image_bytes: bytes, mime_type: s
     """
     Generate a JSON response with image input (Gemini Vision).
     """
-    model = _init_vision_model()
+    model = _get_vision_model()
     try:
         import google.generativeai as genai
         image_part = {"mime_type": mime_type, "data": image_bytes}

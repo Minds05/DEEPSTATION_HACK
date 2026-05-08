@@ -4,7 +4,7 @@
  * Supports negotiation trigger and schedule modal open.
  */
 import { useState } from 'react';
-import { MapPin, Wifi, UtensilsCrossed, Car, Shield, ShieldCheck, Star, IndianRupee, BedDouble, Bath, MessageSquare, Calendar, Phone, User } from 'lucide-react';
+import { MapPin, Wifi, UtensilsCrossed, Car, Shield, ShieldCheck, Star, IndianRupee, BedDouble, Bath, MessageSquare, Calendar, Phone, User, Map } from 'lucide-react';
 
 const AMENITY_ICONS = {
   wifi: { icon: Wifi, label: 'WiFi' },
@@ -67,9 +67,20 @@ export default function HousingCard({ listing, score, reasons = [], onSchedule, 
         </div>
 
         {/* Location */}
-        <div className="flex items-center gap-1.5 text-slate-400 text-xs">
-          <MapPin className="w-3.5 h-3.5 text-violet-400 flex-shrink-0" />
-          <span>{listing.area ? `${listing.area}, ` : ''}{listing.location}</span>
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center gap-1.5 text-slate-400 text-xs">
+            <MapPin className="w-3.5 h-3.5 text-violet-400 flex-shrink-0" />
+            <span className="line-clamp-1">{listing.area ? `${listing.area}, ` : ''}{listing.location}</span>
+          </div>
+          <a
+            href={`https://www.openstreetmap.org/search?query=${encodeURIComponent((listing.area ? `${listing.area}, ` : '') + (listing.location || ''))}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1 text-violet-400 hover:text-violet-300 text-[10px] font-medium transition-colors bg-violet-500/10 hover:bg-violet-500/20 px-2 py-1 rounded-lg flex-shrink-0"
+          >
+            <Map className="w-3 h-3" />
+            Directions
+          </a>
         </div>
 
         {/* Bedrooms / Bathrooms */}
