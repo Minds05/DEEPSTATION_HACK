@@ -1,0 +1,6 @@
+{
+  "name": "CivicNexus",
+  "description": "Multi-agent orchestrated autonomous community action system with persistent chat sessions for solving complex civic issues in traffic, funding, and education.",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}
