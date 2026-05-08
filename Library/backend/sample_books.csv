@@ -1,0 +1,16 @@
+isbn,title,author,genre,buy_price,rating
+978-0131103627,The C Programming Language,Brian W. Kernighan,Computer Science,45.00,4.8
+978-0201616224,The Pragmatic Programmer,Andrew Hunt,Software Engineering,40.00,4.9
+978-0132350884,Clean Code,Robert C. Martin,Software Engineering,42.50,4.7
+978-0201835953,Design Patterns,Erich Gamma,Computer Science,55.00,4.6
+978-0262033848,Introduction to Algorithms,Thomas H. Cormen,Algorithms,85.00,4.7
+978-1449331818,Learning Python,Mark Lutz,Python,50.00,4.5
+978-0134685991,Effective Java,Joshua Bloch,Java,48.00,4.9
+978-1491950296,Programming Rust,Jim Blandy,Rust,55.00,4.7
+978-0135957059,The Pragmatic Programmer 2nd,Andrew Hunt,Software Engineering,45.00,4.9
+978-1491956250,Fluent Python,Luciano Ramalho,Python,60.00,4.8
+978-1492041139,Data Science from Scratch,Joel Grus,Data Science,40.00,4.5
+978-1492032649,Hands-On Machine Learning,Aurélien Géron,Machine Learning,65.00,4.9
+978-1098120501,Designing Data-Intensive Applications,Martin Kleppmann,System Design,52.00,4.9
+978-0134494166,Clean Architecture,Robert C. Martin,Software Architecture,35.00,4.7
+978-0321125217,Domain-Driven Design,Eric Evans,Software Engineering,55.00,4.6

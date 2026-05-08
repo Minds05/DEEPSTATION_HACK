@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+google-generativeai
+firebase-admin
+pandas
+python-dotenv
+sentence-transformers
+torch

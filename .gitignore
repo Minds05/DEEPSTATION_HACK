@@ -1,0 +1,21 @@
+# Environment variables
+.env
+*.env
+
+# Python virtual environments
+venv/
+venv2/
+__pycache__/
+*.pyc
+
+# Node modules
+node_modules/
+
+# IDE
+.vscode/
+
+# Firebase credentials
+*.json
+!firebase.json
+!package.json
+!package-lock.json
