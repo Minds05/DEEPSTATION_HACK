@@ -41,6 +41,13 @@ async def run(
             "fallback_rent": current_rent,
             "key_points": ["rent is within budget"],
         }
+        
+    savings = current_rent - target_rent
+    savings_pct = round((savings / current_rent) * 100)
+    
+    # Enforce strict 10-20% discount rule requested by user
+    if savings_pct < 10 or savings_pct > 20:
+        raise ValueError("Disagree: The owner is only willing to consider a reasonable discount between 10% and 20%. Please adjust your target amount.")
 
     prompt = NEGOTIATION_MESSAGE_PROMPT.format(
         current_rent=current_rent,
