@@ -1,0 +1,105 @@
+rules_version = '2';
+
+// ============================================================
+// C-IAW Firebase Storage Security Rules
+// Architecture: Single-User Local → Cloud Run Backend
+// Storage Paths:
+//   resumes/{userId}/{filename}       → User's uploaded resume PDF
+//   screenshots/{userId}/{appId}.png  → Auto-apply confirmation screenshots
+// ============================================================
+
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // ----------------------------------------------------------
+    // HELPER FUNCTIONS
+    // ----------------------------------------------------------
+
+    // Is the request from an authenticated user?
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Is the signed-in user the owner of this path?
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // Is the uploaded file a PDF? (MIME type check)
+    function isPDF() {
+      return request.resource.contentType == 'application/pdf';
+    }
+
+    // Is the uploaded file a PNG image?
+    function isPNG() {
+      return request.resource.contentType == 'image/png';
+    }
+
+    // Is the file under 10 MB? (Resume size guard)
+    function isUnder10MB() {
+      return request.resource.size < 10 * 1024 * 1024;
+    }
+
+    // Is the file under 5 MB? (Screenshot size guard)
+    function isUnder5MB() {
+      return request.resource.size < 5 * 1024 * 1024;
+    }
+
+    // ----------------------------------------------------------
+    // PATH: resumes/{userId}/{filename}
+    // Stores the user's uploaded resume PDF.
+    // ----------------------------------------------------------
+    match /resumes/{userId}/{filename} {
+
+      // Owner can download their own resume.
+      allow read: if isOwner(userId);
+
+      // Owner can upload a PDF resume up to 10 MB.
+      allow create, update: if isOwner(userId)
+        && isPDF()
+        && isUnder10MB();
+
+      // Owner can delete their own resume (e.g., re-upload flow).
+      allow delete: if isOwner(userId);
+    }
+
+    // ----------------------------------------------------------
+    // PATH: screenshots/{userId}/{appId}.png
+    // Stores auto-apply confirmation screenshots captured by Playwright.
+    // Written exclusively by the backend (Admin SDK).
+    // ----------------------------------------------------------
+    match /screenshots/{userId}/{appId} {
+
+      // Owner can view their application screenshots.
+      allow read: if isOwner(userId);
+
+      // Block all direct client writes — backend Admin SDK only.
+      // This guard fires only if the client somehow attempts a direct upload.
+      allow create, update: if false;
+
+      // No deletes — screenshots are permanent audit records.
+      allow delete: if false;
+    }
+
+    // ----------------------------------------------------------
+    // PATH: covers/{userId}/{appId}.pdf
+    // Stores generated cover letter PDFs for Workday/manual jobs.
+    // Written by backend, readable by the owning user.
+    // ----------------------------------------------------------
+    match /covers/{userId}/{appId} {
+
+      // Owner can download their cover letter.
+      allow read: if isOwner(userId);
+
+      // Block client writes — cover letters are backend-generated only.
+      allow write: if false;
+    }
+
+    // ----------------------------------------------------------
+    // DENY ALL — catch-all for any other storage paths.
+    // ----------------------------------------------------------
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

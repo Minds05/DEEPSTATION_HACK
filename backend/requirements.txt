@@ -1,0 +1,31 @@
+# ─── Web Framework ────────────────────────────────────────────
+fastapi==0.111.0
+uvicorn[standard]==0.29.0
+python-multipart==0.0.9          # File uploads
+sse-starlette==1.8.2             # Server-Sent Events
+
+# ─── Firebase ─────────────────────────────────────────────────
+firebase-admin==6.5.0            # Admin SDK (Firestore + Storage)
+
+# ─── AI / Gemini ──────────────────────────────────────────────
+google-generativeai==0.7.2       # Gemini 2.0 Flash
+google-cloud-aiplatform==1.57.0  # Vertex AI embeddings (vector scoring)
+
+# ─── PDF Processing ───────────────────────────────────────────
+pymupdf==1.24.3                  # Fast PDF text extraction (fitz)
+pdfplumber==0.11.0               # Fallback structured extraction
+
+# ─── Browser Automation ───────────────────────────────────────
+playwright==1.44.0               # Headless Chromium auto-apply
+
+# ─── Utilities ────────────────────────────────────────────────
+python-dotenv==1.0.1             # .env loading
+pydantic==2.7.1                  # Data models / validation
+pydantic-settings==2.2.1         # Settings from env vars
+httpx==0.27.0                    # Async HTTP client (resume download + TestClient)
+tenacity==8.3.0                  # Retry logic for API calls
+reportlab==4.2.0                 # Cover letter PDF export
+
+# ─── Testing ──────────────────────────────────────────────────
+pytest==8.2.0
+pytest-asyncio==0.23.6

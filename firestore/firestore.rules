@@ -1,0 +1,59 @@
+rules_version = '2';
+
+// ============================================================
+// C-IAW Firestore Security Rules — Single User Dev Mode
+// Architecture: No Firebase Auth (single-user local app)
+// Backend (Admin SDK) → bypasses all rules (full trust)
+// Frontend (client SDK) → open read, backend-only writes
+// ============================================================
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ----------------------------------------------------------
+    // COLLECTION: job_pool/{jobId}
+    // Frontend reads to populate Zone C (job board)
+    // Backend writes via Admin SDK
+    // ----------------------------------------------------------
+    match /job_pool/{jobId} {
+      allow read:   if true;   // open read — single user app, no auth needed
+      allow write:  if false;  // backend Admin SDK only
+    }
+
+    // ----------------------------------------------------------
+    // COLLECTION: thought_logs/{logId}
+    // Frontend reads to populate Zone B (activity feed)
+    // Backend writes via Admin SDK
+    // ----------------------------------------------------------
+    match /thought_logs/{logId} {
+      allow read:   if true;
+      allow write:  if false;
+    }
+
+    // ----------------------------------------------------------
+    // COLLECTION: applications/{appId}
+    // Frontend reads to populate Applied Jobs tab
+    // Backend writes via Admin SDK
+    // ----------------------------------------------------------
+    match /applications/{appId} {
+      allow read:   if true;
+      allow write:  if false;
+    }
+
+    // ----------------------------------------------------------
+    // COLLECTION: users/{userId}/**
+    // Profile, preferences, task_status — open read
+    // ----------------------------------------------------------
+    match /users/{userId}/{document=**} {
+      allow read:   if true;
+      allow write:  if false;
+    }
+
+    // ----------------------------------------------------------
+    // DENY ALL — catch-all safety net
+    // ----------------------------------------------------------
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

@@ -1,0 +1,44 @@
+# ─── Python ──────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# ─── Virtual Environments ────────────────────────────────────
+venv/
+.venv/
+env/
+ENV/
+
+# ─── Secrets ─────────────────────────────────────────────────
+.env
+*.env
+firebase-service-account.json
+*-service-account*.json
+*.key
+*.pem
+
+# ─── Node / Frontend ─────────────────────────────────────────
+node_modules/
+frontend/dist/
+frontend/.env
+
+# ─── OS ──────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ─── IDE ─────────────────────────────────────────────────────
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# ─── Playwright ──────────────────────────────────────────────
+playwright-report/
+test-results/

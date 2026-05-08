@@ -1,0 +1,114 @@
+/* ============================================================
+   Three-Zone Layout Grid
+   Zone A (left 28%): Chat / Dialogue
+   Zone B (center 44%): Activity Feed
+   Zone C (right 28%): Job Vault
+   ============================================================ */
+
+.app-shell {
+  display:        grid;
+  grid-template-columns: 28% 1fr 28%;
+  grid-template-rows:    100vh;
+  gap:            var(--space-3);
+  padding:        var(--space-3);
+  max-width:      100vw;
+  overflow:       hidden;
+}
+
+/* ── Zone Headers ────────────────────────────────────────────── */
+.zone-header {
+  display:          flex;
+  align-items:      center;
+  justify-content:  space-between;
+  padding:          var(--space-4) var(--space-5);
+  border-bottom:    1px solid var(--color-border);
+  flex-shrink:      0;
+}
+
+.zone-header h2 {
+  font-size:   0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color:       var(--color-text-secondary);
+}
+
+.zone-header .zone-badge {
+  font-size:    0.7rem;
+  font-weight:  600;
+  padding:      2px 8px;
+  border-radius: 20px;
+  background:   var(--color-primary-glow);
+  color:        var(--color-primary);
+  border:       1px solid rgba(59, 130, 246, 0.3);
+}
+
+/* ── Zone A — Chat / Dialogue ───────────────────────────────── */
+.zone-a {
+  display:        flex;
+  flex-direction: column;
+  height:         100%;
+  overflow:       hidden;
+}
+
+.zone-a .chat-body {
+  flex:       1;
+  overflow-y: auto;
+  padding:    var(--space-4);
+  display:    flex;
+  flex-direction: column;
+  gap:        var(--space-3);
+}
+
+.zone-a .chat-footer {
+  padding:    var(--space-3) var(--space-4);
+  border-top: 1px solid var(--color-border);
+  flex-shrink: 0;
+}
+
+/* ── Zone B — Activity Feed ─────────────────────────────────── */
+.zone-b {
+  display:        flex;
+  flex-direction: column;
+  height:         100%;
+  overflow:       hidden;
+}
+
+.zone-b .feed-body {
+  flex:       1;
+  overflow-y: auto;
+  padding:    var(--space-4);
+  display:    flex;
+  flex-direction: column;
+  gap:        var(--space-2);
+}
+
+/* ── Zone C — Job Vault ─────────────────────────────────────── */
+.zone-c {
+  display:        flex;
+  flex-direction: column;
+  height:         100%;
+  overflow:       hidden;
+}
+
+.zone-c .vault-body {
+  flex:       1;
+  overflow-y: auto;
+  padding:    var(--space-4);
+  display:    flex;
+  flex-direction: column;
+  gap:        var(--space-3);
+}
+
+/* ── Responsive: Collapse to single column on small screens ─── */
+@media (max-width: 1200px) {
+  .app-shell {
+    grid-template-columns: 1fr;
+    grid-template-rows:    auto;
+    height:                auto;
+    overflow:              auto;
+  }
+  .zone-a, .zone-b, .zone-c {
+    height: 60vh;
+  }
+}
