@@ -1,0 +1,4 @@
+[submodule "career-agent"]
+	path = career-agent
+	url = https://github.com/Minds05/DEEPSTATION_HACK.git
+	branch = JOB
